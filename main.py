@@ -10,6 +10,9 @@ LINE_COUNT = False  # count of lines to be processed; False => whole file or til
 
 
 def stop_program(sig, frame):
+    """
+    Stops the program and print a statistic of tried and cracked hashes
+    """
     print("--------------------------------------------------\n"
           "{} tried\n{} cracked\ntime: {}s"
           .format(hash_count, len(cracked), time()-start_time))
@@ -17,6 +20,9 @@ def stop_program(sig, frame):
 
 
 def get_additions():
+    """
+    Returns a list of special characters later added to the string
+    """
     additions = list("!$?")
     additions.extend(["", 123, 1234, 69, "007"])
     additions.extend([*range(1, 14), *range(2000, 2010), *range(95, 100)])
@@ -29,6 +35,10 @@ def get_additions():
 
 
 def dictionary_generator(file):
+    """
+    Returns a generator providing the words in a file
+    If a word contains uppercase letters, it is yielded both as the original word and the lowercase variant
+    """
     file.seek(0)
     for line in file:
         line = line.strip("\n")
@@ -53,9 +63,7 @@ if __name__ == "__main__":
                      for x in range(LINE_COUNT)] if LINE_COUNT else hash_file
 
         for hash_val in hash_list:
-            # val equals first match found
-            # next acts like break in for loop
-
+            # val is first match found
             val = next((w+str(a) for w in dictionary_generator(dictionary_file)
                         for a in additions if hash_val.strip("\n") == sha1((w+str(a)).encode()).hexdigest()), False)
 
