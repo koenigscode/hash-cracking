@@ -6,4 +6,4 @@ def shuffle_file(input_file_name, output_file_name):
         lines = open(input_file_name).readlines()
         random.shuffle(lines)
         file.writelines(lines)
-        lines.close()
+        file.close()
